@@ -13,7 +13,7 @@ The two launch files in launch folder were used to recored the videos, one launc
 
 ## Related packages
 
-[depth_yolact_ros](https://github.com/Eruvae/yolact_ros_msgs): The actual ROS package.
+[depth_yolact_ros](https://github.com/MarkNaeem/depth_yolact_ros): The actual ROS package.
 
 
 [yolact_ros_msgs](https://github.com/Eruvae/yolact_ros_msgs): Provides messages for publishing the detection results.
