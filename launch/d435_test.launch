@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find realsense2_description)/urdf/test_d435_camera.urdf.xacro" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" />
+
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="align_depth" value="true"/>
+        <arg name="enable_pointcloud" value="true"/>
+    </include>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find depth_yolact_test)/rviz/d435_test.rviz" respawn="false" />
+
+    <arg name="yolact_weights" default="$(find depth_yolact_ros)/weights/yolact_plus_resnet50_54_800000.pth" />
+	<node pkg="depth_yolact_ros" type="depth_yolact_ros" name="depth_yolact_ros" output="screen">
+		<param name="model_path" value="$(arg yolact_weights)" />
+		<param name="image_topic" value="/camera/color/image_raw" />
+		<param name="depth_topic" value="/camera/aligned_depth_to_color/image_raw" />
+		<param name="camera_info_topic" value="/camera/aligned_depth_to_color/camera_info" />
+		<param name="use_compressed_image" value="False" />
+		<param name="use_compressed_depth" value="False" />
+		<param name="publish_visualization" value="True" />
+		<param name="publish_detections" value="False" />
+		<param name="publish_pointcloud" value="False" />
+		<param name="use_bboxes_world_frame" value="False" />
+		<param name="publish_bboxes" value="True" />
+		<param name="score_threshold" value="0.25" />		
+		<param name="use_kmeans" value="True" />
+		<param name="initial_centroid" value="7" />
+		<param name="world_frame" value="odom" />		
+		<param name="use_gaussian" value="True" />
+		<param name="std_multiplier" value="2.0" />				
+		<param name="display_fps" value="True" />				
+	</node>
+
+
+</launch>
